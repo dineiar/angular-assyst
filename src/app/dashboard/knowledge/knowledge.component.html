@@ -1,0 +1,211 @@
+<div class="main container-fluid container-view" id="container-knowledge" style="padding: 15px;">
+    <div class="row" id="single-knowledge-loader" *ngIf="loadingKnowledge">
+        <div class="col-md-12">
+            <div class="default-loader">
+                <div class="rect1"></div>
+                <div class="rect2"></div>
+                <div class="rect3"></div>
+                <div class="rect4"></div>
+                <div class="rect5"></div>
+            </div>
+        </div>
+    </div>
+    <div class="row" id="single-knowledge" *ngIf="!loadingKnowledge && knowledge$ | async as knowledge" tabindex="0" (keypress)="keyPress($event)">
+        <nav *ngIf="knowledge.procedureStatus != 1 && (knowledge.procedureStatus != 4 || isModified(knowledge))" class="navbar navbar-onscroll fixed-top navbar-expand-md navbar-light bg-default" style="display: none;">
+            <div class="container">
+                <span>{{knowledge.name}}</span>
+                <ul class="navbar-nav nav-pills knowledge-review-version-select">
+                    <li class="nav-item"><span class="nav-link disabled"><u>V</u>er a versão:</span></li>
+                    <li class="nav-item"><a (click)="setViewPublished()" [ngClass]="{'active': viewPublished()}" class="nav-link" href="javascript:void(0);">Publicada</a></li>
+                    <li class="nav-item"><a (click)="setViewDraft()" [ngClass]="{'active': viewDraft()}" class="nav-link" href="javascript:void(0);">Rascunho</a></li>
+                </ul>
+            </div>
+        </nav>
+        <div *ngIf="knowledge.discontinued" class="col-md-12 alert alert-warning">
+            <div class="container">
+                <i class="material-icons alert-icon">warning</i>
+                <span>Este conhecimento está obsoleto e não deve ser utilizado</span>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <nav *ngIf="knowledgeCategories" aria-label="breadcrumb" role="navigation">
+                <ol class="breadcrumb">
+                    <li *ngFor="let category of knowledgeCategories" class="breadcrumb-item">{{category.name}}</li>
+                </ol>
+            </nav>
+            <div class="knowledge-title">
+                <h2 style="display: inline;">{{knowledge.name}}</h2>
+                <a [href]="getAssystLink(knowledge.id)" target="_blank" title="Abrir no Assyst">
+                    <i class="material-icons">open_in_new</i>
+                </a>
+                <a href="javascript:window.print();" class="d-print-none" title="Imprimir">
+                    <i class="material-icons">print</i>
+                </a>
+            </div>
+        </div>
+        <ul *ngIf="knowledge.procedureStatus != 1 && (knowledge.procedureStatus != 4 || isModified(knowledge))" class="nav nav-pills knowledge-review-version-select" role="tablist" style="width: 100%;">
+            <li class="nav-item d-print-none"><span class="nav-link disabled"><u>V</u>er a versão:</span></li>
+            <li class="nav-item d-none d-print-block"><span class="nav-link disabled">Versão:</span></li>
+            <li class="nav-item"><a (click)="setViewPublished()" [ngClass]="{'active': viewPublished()}" class="nav-link" href="javascript:void(0);" data-toggle="tab" role="tab">Publicada</a></li>
+            <li class="nav-item"><a (click)="setViewDraft()" [ngClass]="{'active': viewDraft()}" class="nav-link" href="javascript:void(0);" data-toggle="tab" role="tab">Rascunho</a></li>
+        </ul>
+        <div class="col-md-12 knowledge-badge-container">
+            <div [hidden]="!viewPublished()" class="form-group bmd-form-group is-filled">
+                <label for="knowledge-status" class="bmd-label-floating">Status</label>
+                <div *ngIf="knowledge.discontinued" class="form-control-plaintext icon-text-aligned knowledge-status text-muted" title="Conhecimento obsoleto">
+                    <span>Obsoleto</span>
+                    <i class="material-icons">remove_circle</i>
+                </div>
+                <div *ngIf="!knowledge.discontinued && knowledge.procedureStatus == 1 && !knowledge.underReview" class="form-control-plaintext icon-text-aligned knowledge-status text-warning" title="Conhecimento em elaboração, ainda não aprovado">
+                    <span>Esboço</span>
+                    <i class="material-icons">warning</i>
+                </div>
+                <div *ngIf="!knowledge.discontinued && knowledge.procedureStatus == 1 && knowledge.underReview" class="form-control-plaintext icon-text-aligned knowledge-status text-warning" title="Conhecimento aguardando aprovação do revisor para publicação.">
+                    <span>Aguardando revisão</span>
+                    <i class="material-icons">report</i>
+                </div>
+                <div *ngIf="!knowledge.discontinued && knowledge.procedureStatus == 4 && !knowledge.underReview && !isModified(knowledge)" class="form-control-plaintext icon-text-aligned knowledge-status text-success" title="Conhecimento publicado, versão mais atual sendo exibida">
+                    <span>Publicado</span>
+                    <i class="material-icons">check_circle</i>
+                </div>
+                <div *ngIf="!knowledge.discontinued && knowledge.procedureStatus == 4 && !knowledge.underReview && isModified(knowledge)" class="form-control-plaintext icon-text-aligned knowledge-status text-warning" title="Já foi publicado, mas as alterações mais recentes ainda não foram revisadas.">
+                    <span>Alterações pendentes</span>
+                    <i class="material-icons">report</i>
+                </div>
+                <div *ngIf="!knowledge.discontinued && knowledge.procedureStatus == 4 && knowledge.underReview" class="form-control-plaintext icon-text-aligned knowledge-status text-warning" title="Já foi publicado, mas as alterações mais recentes estão aguardando revisão.">
+                    <span>Alterações aguardando revisão</span>
+                    <i class="material-icons">report</i>
+                </div>
+                <div *ngIf="!knowledge.discontinued && knowledge.procedureStatus == 5" class="form-control-plaintext icon-text-aligned knowledge-status text-muted" title="Conhecimento retirado, inativo">
+                    <span>Retirado</span>
+                    <i class="material-icons">remove_circle</i>
+                </div>
+            </div>
+            <div [hidden]="!viewDraft()" class="form-group bmd-form-group is-filled">
+                <label for="knowledge-status" class="bmd-label-floating">Status</label>
+                <div *ngIf="knowledge.draftDiscontinued" class="form-control-plaintext icon-text-aligned knowledge-status text-muted" title="Conhecimento obsoleto">
+                    <span>Obsoleto</span>
+                    <i class="material-icons">remove_circle</i>
+                </div>
+                <div *ngIf="!knowledge.draftDiscontinued && knowledge.draftProcedureStatus == 1 && !knowledge.underReview" class="form-control-plaintext icon-text-aligned knowledge-status text-warning" title="Conhecimento em elaboração, ainda não aprovado">
+                    <span>Esboço</span>
+                    <i class="material-icons">warning</i>
+                </div>
+                <div *ngIf="!knowledge.draftDiscontinued && knowledge.draftProcedureStatus == 1 && knowledge.underReview" class="form-control-plaintext icon-text-aligned knowledge-status text-warning" title="Conhecimento aguardando aprovação do revisor para publicação.">
+                    <span>Aguardando revisão</span>
+                    <i class="material-icons">report</i>
+                </div>
+                <div *ngIf="!knowledge.draftDiscontinued && knowledge.draftProcedureStatus == 4 && !knowledge.underReview && !isModified(knowledge)" class="form-control-plaintext icon-text-aligned knowledge-status text-success" title="Conhecimento publicado, versão mais atual sendo exibida">
+                    <span>Publicado</span>
+                    <i class="material-icons">check_circle</i>
+                </div>
+                <div *ngIf="!knowledge.draftDiscontinued && knowledge.draftProcedureStatus == 4 && !knowledge.underReview && isModified(knowledge)" class="form-control-plaintext icon-text-aligned knowledge-status text-warning" title="Já foi publicado, mas as alterações mais recentes ainda não foram revisadas.">
+                    <span>Alterações pendentes</span>
+                    <i class="material-icons">report</i>
+                </div>
+                <div *ngIf="!knowledge.draftDiscontinued && knowledge.draftProcedureStatus == 4 && knowledge.underReview" class="form-control-plaintext icon-text-aligned knowledge-status text-warning" title="Já foi publicado, mas as alterações mais recentes estão aguardando revisão.">
+                    <span>Alterações aguardando revisão</span>
+                    <i class="material-icons">report</i>
+                </div>
+                <div *ngIf="!knowledge.draftDiscontinued && knowledge.draftProcedureStatus == 5" class="form-control-plaintext icon-text-aligned knowledge-status text-muted" title="Conhecimento retirado, inativo">
+                    <span>Retirado</span>
+                    <i class="material-icons">remove_circle</i>
+                </div>
+            </div>
+            <!-- <div class="form-group bmd-form-group is-filled">
+                <label for="knowledge-viewCount" class="bmd-label-floating">Visualizações</label>
+                <div class="form-control-plaintext icon-text-aligned" style="min-width: 70px;">
+                    <i class="material-icons">visibility</i>
+                    <span>{{knowledge.viewCount}}</span>
+                </div>
+            </div> -->
+            <div class="form-group bmd-form-group is-filled" *ngIf="knowledge.procedureStatus == 4">
+                <label class="bmd-label-floating">Publicado em</label>
+                <div class="form-control-plaintext icon-text-aligned" style="min-width: 70px;">
+                    <span>{{knowledge.publishDate | date}}</span>
+                </div>
+            </div>
+            <div class="form-group bmd-form-group is-filled" *ngIf="knowledge.procedureStatus != 4">
+                <label class="bmd-label-floating">Modificado em</label>
+                <div class="form-control-plaintext icon-text-aligned" style="min-width: 70px;">
+                    <span>{{knowledge.modifyDate | date}}, por {{knowledge.modifyId}}</span>
+                </div>
+            </div>
+            <div *ngIf="knowledge.underReview" class="form-group bmd-form-group is-filled">
+                <label class="bmd-label-floating">Revisar conhecimento</label>
+                <div class="form-control-plaintext icon-text-aligned">
+                    <div class="dropdown">
+                        <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="dropdownReviewKnowledge" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Realizar decisão
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownReviewKnowledge">
+                            <a class="dropdown-item" (click)="approveKnowledge(knowledge)" href="javascript:void(0);">
+                                <i class="material-icons text-success">check_circle</i> Aprovar e publicar conhecimento
+                            </a>
+                            <a class="dropdown-item" (click)="rejectKnowledge(knowledge)" href="javascript:void(0);">
+                                <i class="material-icons text-danger">remove_circle</i> Rejeitar alterações
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12" *ngIf="knowledgeAttachments">
+            <div *ngIf="knowledgeAttachments && knowledgeAttachments.length">
+                <h4>Anexos</h4>
+                <div *ngFor="let attachment of knowledgeAttachments" class="card assyst-attachment">
+                    <div class="card-body">
+                        <h4 class="card-title" *ngIf="attachment.name">
+                            {{attachment.name}}<span *ngIf="attachment.fileName && attachment.fileName != attachment.name"> ({{attachment.fileName}})</span>
+                        </h4>
+                        <h4 class="card-title" *ngIf="!attachment.name && attachment.fileName">
+                            {{attachment.fileName}}
+                        </h4>
+                        <p class="card-text" [innerHTML]="attachment.description | nl2br"></p>
+                        <a href="javascript:void(0);" (click)="downloadAttachment(knowledge, attachment)" class="btn btn-primary btn-sm" title="Baixar anexo">
+                            <span *ngIf="!attachment.loadingDownload">Baixar anexo <i class="material-icons">file_download</i></span>
+                            <div *ngIf="attachment.loadingDownload" class="default-loader small">
+                                <div class="rect1"></div>
+                                <div class="rect2"></div>
+                                <div class="rect3"></div>
+                                <div class="rect4"></div>
+                                <div class="rect5"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="knowledge.name != knowledge.draftName" class="col-md-12">
+            <h4>Título</h4>
+            <h5 [hidden]="!viewPublished()" class="font-weight-bold">{{knowledge.name}}</h5>
+            <h5 [hidden]="!viewDraft()" class="font-weight-bold">{{knowledge.draftName}}</h5>
+        </div>
+        <div class="col-md-12">
+            <!-- <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Problema</h4>
+                    <div [hidden]="!viewPublished()" class="assyst-rich-text" [innerHTML]="knowledge.problem.content | assystFixHtml | safeHtml"></div>
+                    <div [hidden]="!viewDraft()" class="assyst-rich-text" [innerHTML]="knowledge.draftProblem.content | assystFixHtml | safeHtml"></div>
+                </div>
+            </div> -->
+            <h4 class="assyst-field-title">Problema</h4>
+            <div [hidden]="!viewPublished()" class="assyst-rich-text" *ngIf="knowledge.problem.content" [innerHTML]="knowledge.problem.content | assystFixHtml | safeHtml"></div>
+            <div [hidden]="!viewDraft()" class="assyst-rich-text" *ngIf="knowledge.draftProblem.content" [innerHTML]="knowledge.draftProblem.content | assystFixHtml | safeHtml"></div>
+        </div>
+        <div class="col-md-12 mt-10">
+            <!-- <div class="card">
+                <div class="card-header card-header-primary"><h4 class="card-title">Solução</h4></div>
+                <div [hidden]="!viewPublished()" class="card-body assyst-rich-text" [innerHTML]="knowledge.solution.content | assystFixHtml | safeHtml"></div>
+                <div [hidden]="!viewDraft()" class="card-body assyst-rich-text" [innerHTML]="knowledge.draftSolution.content | assystFixHtml | safeHtml"></div>
+            </div> -->
+            <h4 class="assyst-field-title">Solução</h4>
+            <div [hidden]="!viewPublished()" class="assyst-rich-text" *ngIf="knowledge.solution.content" [innerHTML]="knowledge.solution.content | assystFixHtml | safeHtml"></div>
+            <div [hidden]="!viewDraft()" class="assyst-rich-text" *ngIf="knowledge.draftSolution.content" [innerHTML]="knowledge.draftSolution.content | assystFixHtml | safeHtml"></div>
+        </div>
+        <div class="col-md-6">
+            <h4 class="assyst-field-title">Comentários do Revisor</h4>
+            <div><p>{{knowledge.reviewComments}}</p></div>
+        </div>
+    </div>
+</div>

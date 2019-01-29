@@ -1,0 +1,57 @@
+<div class="not-found-page sidebar-collapse">
+    <nav class="navbar navbar-transparent navbar-color-on-scroll fixed-top navbar-expand-lg" color-on-scroll="100" id="sectionsNav">
+        <div class="container">
+            <div class="navbar-translate">
+                <a class="navbar-brand" [routerLink]="['/']">
+                    Assyst Front
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="navbar-toggler-icon"></span>
+                    <span class="navbar-toggler-icon"></span>
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+    <div class="page-header header-filter" style="background-image: url('assets/vendor/material-kit-html-v2.0.4/assets/img/city-profile.jpg'); background-size: cover; background-position: top center;">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-5 col-md-6 col-sm-8 ml-auto mr-auto">
+                    <div class="card">
+                        <div class="card-header card-header-primary text-center">
+                            <h4 class="card-title">404</h4>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text text-center">
+                                A página que você procurava não foi encontrada :(
+                            </p>
+                        </div>
+                        <div class="footer text-center">
+                            <!-- <button type="submit" class="btn btn-primary btn-link btn-wd btn-lg" onclick="return loginView.login($('#inputLogin').val(), $('#inputPassword').val())">Login</button> -->
+                            <a class="btn btn-primary btn-link btn-wd btn-lg" href="javascript:history.go(-1);">Voltar</a>
+                            <a class="btn btn-primary btn-link btn-wd btn-lg" [routerLink]="['/']">Início</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="footer">
+            <div class="container">
+                <nav class="float-left">
+                    <ul>
+                        <li>
+                            <a href="http://portalsm.trt4.gov.br/">
+                                Seção de Microinformática
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- <div class="copyright float-right">
+                    Template made with <i class="material-icons">favorite</i> by
+                    <a href="https://www.creative-tim.com" target="_blank">Creative Tim</a> for a better web.
+                </div> -->
+            </div>
+        </footer>
+    </div>
+</div>

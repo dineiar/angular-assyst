@@ -1,0 +1,27 @@
+<ul *ngIf="categories || knowledges" class="list-unstyled list-knowledge-categories">
+    <li *ngFor="let category of categories" class="icon-text-aligned">
+        <a href="javascript:void(0);" (click)="loadChildCategories(category)">
+            <i class="material-icons" *ngIf="!category.loadingChildren && !category.showingChildren">expand_more</i>
+            <i class="material-icons" *ngIf="!category.loadingChildren && category.showingChildren">expand_less</i>
+            <i class="material-icons animate-roll" *ngIf="category.loadingChildren">cached</i>
+            {{category.name}}
+        </a>
+        <app-knowledge-list-tree-view [hidden]="category.loadingChildren || !category.showingChildren"
+            [categories]="category.childrenCategories" [knowledges]="category.childrenKnowledges"
+            (knowledgeSelected)="selectKnowledge($event)"></app-knowledge-list-tree-view>
+        <ul *ngIf="category.childrenCategories && !category.childrenCategories.length && category.childrenKnowledges && !category.childrenKnowledges.length"
+            [hidden]="category.loadingChildren || !category.showingChildren" class="list-unstyled list-knowledge-categories">
+            <li class="text-muted">Sem sub-categorias ou conhecimentos</li>
+        </ul>
+    </li>
+    <li *ngFor="let knowledge of knowledges" class="icon-text-aligned">
+        <a [routerLink]="['/dash/knowledge', knowledge.id]" target="_blank">
+        <!-- <a href="javascript:void(0);" (click)="selectKnowledge(knowledge.id)"> -->
+            <!-- <i class="material-icons">insert_drive_file</i> -->
+            <i *ngIf="knowledge.procedureStatus == 1" class="material-icons text-warning" title="Esboço de conhecimento">warning</i>
+            <i *ngIf="knowledge.procedureStatus == 4" class="material-icons text-success" title="Conhecimento publicado">check_circle</i>
+            <i *ngIf="knowledge.procedureStatus == 5" class="material-icons text-muted" title="Conhecimento retirado">remove_circle</i>
+            {{knowledge.name}}
+        </a>
+    </li>
+</ul>

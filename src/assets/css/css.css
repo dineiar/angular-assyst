@@ -1,0 +1,208 @@
+@import url(/home/dineir/Projects/assyst-front/css/material-icons.css);
+.card-login .form {
+  min-height: 300px;
+}
+span.form-control-plaintext,p.form-control-plaintext {
+  font-weight: 400;
+}
+.knowledge-badge-container {
+    display: flex;
+    align-items: center;
+}
+.knowledge-badge-container > div {
+    margin: 0 15px;
+}
+
+.no-data {
+  text-align: center;
+  font-variant: small-caps;
+  background: #fff9ce;
+  padding: 6px;
+}
+
+.code-break {
+  word-break: break-all;
+}
+
+.alert.alert-absolute {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1050;
+  width: 100%;
+}
+
+.event-row .loading > .default-loader {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.navbar .navbar-nav .nav-item .profile-photo-small {
+  line-height: 40px;
+}
+
+.navbar .navbar-nav .nav-item .profile-photo-small > .material-icons {
+  font-size: 40px;
+}
+
+.default-loader {
+  text-align: center;
+  font-size: 10px;
+  width: 60px;
+  height: 40px;
+  margin: 12px auto;
+}
+
+.default-loader > div {
+  background-color: #b5bbc8;
+  height: 100%;
+  display: inline-block;
+  -webkit-animation: stretchdelay 1.2s infinite ease-in-out;
+  animation: stretchdelay 1.2s infinite ease-in-out;
+}
+
+.default-loader.invert > div {
+  -webkit-animation: stretchdelayinvert 1.2s infinite ease-in-out;
+  animation: stretchdelayinvert 1.2s infinite ease-in-out;
+}
+
+.default-loader .rect2,
+.default-loader.invert > div.rect2 {
+  -webkit-animation-delay: -1.1s;
+  animation-delay: -1.1s;
+}
+
+.default-loader .rect3,
+.default-loader.invert > div.rect3 {
+  -webkit-animation-delay: -1s;
+  animation-delay: -1s;
+}
+
+.default-loader .rect4,
+.default-loader.invert > div.rect4 {
+  -webkit-animation-delay: -0.9s;
+  animation-delay: -0.9s;
+}
+
+.default-loader .rect5,
+.default-loader.invert > div.rect5 {
+  -webkit-animation-delay: -0.8s;
+  animation-delay: -0.8s;
+}
+
+.default-loader.absolute-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+
+.default-loader > div {
+  width: 6px;
+}
+
+.default-loader.absolute-center {
+  margin: -20px 0 0 -30px;
+}
+
+.default-loader.xsmall {
+  width: 18px;
+  height: 12px;
+  margin: 3.6px auto;
+}
+
+.default-loader.xsmall > div {
+  width: 1.8px;
+}
+
+.default-loader.xsmall.absolute-center {
+  margin: -6px 0 0 -9px;
+}
+
+.default-loader.small {
+  width: 30px;
+  height: 20px;
+  margin: 6px auto;
+}
+
+.default-loader.small > div {
+  width: 3px;
+}
+
+.default-loader.small.absolute-center {
+  margin: -10px 0 0 -15px;
+}
+
+.default-loader.big {
+  width: 120px;
+  height: 80px;
+  margin: 24px auto;
+}
+
+.default-loader.big > div {
+  width: 12px;
+}
+
+.default-loader.big.absolute-center {
+  margin: -40px 0 0 -60px;
+}
+
+@-webkit-keyframes stretchdelay {
+  0%,
+  40%,
+  100% {
+    -webkit-transform: scaleY(0.4);
+    transform: scaleY(0.4);
+    background-color: #0073b7;
+  }
+  20% {
+    -webkit-transform: scaleY(1);
+    transform: scaleY(1);
+    background-color: #b5bbc8;
+  }
+}
+
+@keyframes stretchdelay {
+  0%,
+  40%,
+  100% {
+    -webkit-transform: scaleY(0.4);
+    transform: scaleY(0.4);
+    background-color: #0073b7;
+  }
+  20% {
+    -webkit-transform: scaleY(1);
+    transform: scaleY(1);
+    background-color: #b5bbc8;
+  }
+}
+
+@-webkit-keyframes stretchdelayinvert {
+  0%,
+  40%,
+  100% {
+    -webkit-transform: scaleY(0.4);
+    transform: scaleY(0.4);
+    background-color: #7fb9db;
+  }
+  20% {
+    -webkit-transform: scaleY(1);
+    transform: scaleY(1);
+    background-color: #ffffff;
+  }
+}
+
+@keyframes stretchdelayinvert {
+  0%,
+  40%,
+  100% {
+    -webkit-transform: scaleY(0.4);
+    transform: scaleY(0.4);
+    background-color: #7fb9db;
+  }
+  20% {
+    -webkit-transform: scaleY(1);
+    transform: scaleY(1);
+    background-color: #ffffff;
+  }
+}
+/*# sourceMappingURL=css.css.map */

@@ -1,0 +1,49 @@
+<div class="index-page sidebar-collapse">
+    <nav class="navbar navbar-expand-lg bg-primary">
+        <div class="container">
+            <div class="navbar-translate">
+                <!-- <a class="navbar-brand" href="javascript:void(0);">Assyst Front</a> -->
+                <span class="navbar-brand">Assyst Front</span>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="navbar-toggler-icon"></span>
+                    <span class="navbar-toggler-icon"></span>
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                        <a class="nav-link" routerLink="/dash">
+                            Chamados <i class="material-icons">inbox</i>
+                        </a>
+                    </li>
+                    <li class="nav-item" routerLinkActive="active">
+                        <a class="nav-link" routerLink="/dash/knowledge">
+                            Conhecimentos <i class="material-icons">subject</i>
+                        </a>
+                    </li>
+                    <li class="dropdown nav-item">
+                        <a href="javascript:void(0);" class="profile-photo dropdown-toggle nav-link" data-toggle="dropdown">
+                            <div class="profile-photo-small">
+                                <i class="material-icons">account_circle</i>
+                            </div>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <h6 class="dropdown-header fill-logged-user-name">{{user.name | assystPersonName}}</h6>
+                            <a href="javascript:void(0);" class="dropdown-item" (click)="logoff()">Sair</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div *ngFor="let alert of layoutHelper.getAlerts()" class="alert {{alert.getCSSClass()}}">
+        <div class="container">
+            <i class="material-icons alert-icon">{{alert.getIcon()}}</i>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true"><i class="material-icons">clear</i></span></button>
+            <span>{{alert.getMessage()}}</span>
+        </div>
+    </div>
+    <router-outlet></router-outlet>
+</div>

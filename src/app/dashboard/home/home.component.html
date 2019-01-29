@@ -1,0 +1,110 @@
+<div class="main container-fluid container-view" id="container-dashboard" style="padding: 15px;">
+    <div class="row">
+        <div class="col-lg-8">
+            <h4 class="pull-left">
+                {{events ? events.length : ''}} chamados de acesso
+            </h4>
+            <div class="default-loader small pull-left" *ngIf="loadingEvents">
+                <div class="rect1"></div>
+                <div class="rect2"></div>
+                <div class="rect3"></div>
+                <div class="rect4"></div>
+                <div class="rect5"></div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="togglebutton pull-right">
+                <label>
+                    <input [(ngModel)]="autoCallback" name="autoCallback" id="autoCallback" type="checkbox" (change)="autoCallbackChanged()">
+                    Tomar ciência automaticamente
+                    <span class="toggle"></span>
+                </label>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <table class="table table-sm" id="tblEvents">
+                <thead>
+                    <tr>
+                        <th scope="col">Referência</th>
+                        <th scope="col">Aberto em</th>
+                        <th scope="col">Usuário informante</th>
+                        <th scope="col">Usuário afetado</th>
+                        <th scope="col">Notas de retorno</th>
+                        <th scope="col" [hidden]="autoCallback" class="text-center">Ciência</th>
+                        <th scope="col" class="text-center">Atribuir</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let evt of events" class="event-row icon-text-aligned" [ngClass]="{'table-warning': evt.alertStatus == 2, 'table-info': evt.alertStatus == 3, 'table-danger': evt.alertStatus == 4}">
+                        <td class="event-reference" scope="row">
+                            <a [href]="assyst.getLinkEvent(evt.id)" target="_blank">{{evt.formattedReference}}</a>
+                        </td>
+                        <td class="event-date" [title]="evt.dateLogged | date:'full'">{{evt.dateLogged | assystEventDate}}</td>
+                        <td class="event-reportinguser">
+                            <!-- &lt;i class='material-icons'&gt;phone&lt;/i&gt; evt.reportingUserTelephoneExtension -->
+                            <!-- <i class='material-icons'>phone</i> evt.reportingUserTelephoneExtension -->
+                            <a href="javascript:void(0);" title="{{evt.reportingUserName | assystPersonName}}"  tabindex="0" data-toggle="popover" data-trigger="focus" data-html="true"
+                                [attr.data-content]="getPopoverContent(evt, 'reporting')">
+                                <i class="material-icons" *ngIf="evt.reportingUserName">person_pin</i>
+                                <span>{{evt.reportingUserName | assystPersonName}}</span>
+                            </a>
+                        </td>
+                        <td class="event-affecteduser">
+                            <a href="javascript:void(0);" title="{{evt.affectedUserName | assystPersonName}}"  tabindex="0" data-toggle="popover" data-trigger="focus" data-html="true"
+                                [attr.data-content]="getPopoverContent(evt, 'affected')">
+                                <i class="material-icons" *ngIf="evt.affectedUserName">person_pin</i>
+                                <span>{{evt.affectedUserName | assystPersonName}}</span>
+                            </a>
+                        </td>
+                        <td class="event-callbackremark">{{evt.callbackRemark}}</td>
+                        <td [hidden]="autoCallback" class="event-callbackrequired text-center">
+                            <a *ngIf="evt.loadingCallback" href="javascript:void(0);" title="Tomando ciência..." class="loading">
+                                <div class="default-loader small">
+                                    <div class="rect1"></div>
+                                    <div class="rect2"></div>
+                                    <div class="rect3"></div>
+                                    <div class="rect4"></div>
+                                    <div class="rect5"></div>
+                                </div>
+                            </a>
+                            <a *ngIf="!evt.loadingCallback && evt.callbackRequired" href="javascript:void(0);" (click)="setUserCallback(evt)" title="Tomar ciência">
+                                <i class="material-icons text-warning">new_releases</i>
+                            </a>
+                            <i *ngIf="!evt.loadingCallback && !evt.callbackRequired" class="material-icons text-success">check</i>
+                        </td>
+                        <td class="event-assign text-center">
+                            <a [hidden]="!evt.loadingAssign" href="javascript:void(0);" title="Atribuindo..." class="loading">
+                                <div class="default-loader small">
+                                    <div class="rect1"></div>
+                                    <div class="rect2"></div>
+                                    <div class="rect3"></div>
+                                    <div class="rect4"></div>
+                                    <div class="rect5"></div>
+                                </div>
+                            </a>
+                            <a [hidden]="evt.loadingAssign" href="javascript:void(0);" (click)="assignToMe(evt)" title="Atribuir a...">
+                                <i class="material-icons">forward</i>
+                            </a>
+                        </td>
+                    </tr>
+                    <tr *ngIf="loadingEvents && !events" class="event-row-init-loader">
+                        <td colspan="100" style="text-align: center;">
+                            <div class="default-loader">
+                                <div class="rect1"></div>
+                                <div class="rect2"></div>
+                                <div class="rect3"></div>
+                                <div class="rect4"></div>
+                                <div class="rect5"></div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr *ngIf="!loadingEvents && (!events || !events.length)" class="event-row-no-data">
+                        <td colspan="100" class="no-data">
+                            Nenhum evento na fila
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

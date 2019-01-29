@@ -1,0 +1,38 @@
+<div class="main container-fluid container-view" id="container-knowledge" style="padding: 15px;">
+    <h4>Acessar conhecimento pelo código</h4>
+    <form class="form-inline" #knowledgeIdForm="ngForm" (ngSubmit)="knowledgeIdSubmit()">
+        <!-- <div class="row">
+            <div class="col-md-4"> -->
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">
+                            <i class="material-icons">subject</i>
+                        </span>
+                    </div>
+                    <input [(ngModel)]="selectedKnowledgeId" name="selectedKnowledgeId" id="inputKnowledgeId" type="text" class="form-control" placeholder="ID do conhecimento" required>
+                </div>
+            <!-- </div> -->
+            <button type="submit" class="btn btn-primary btn-just-icon btn-round" [disabled]="!knowledgeIdForm.form.valid">
+                <i class="material-icons">navigate_next</i>
+            </button>
+        <!-- </div> -->
+    </form>
+    <hr class="mt-5 mb-4">
+    <h4>Categorias de Conhecimentos</h4>
+    <div class="row" id="single-knowledge-loader" *ngIf="loading">
+        <div class="col-md-12">
+            <div class="default-loader">
+                <div class="rect1"></div>
+                <div class="rect2"></div>
+                <div class="rect3"></div>
+                <div class="rect4"></div>
+                <div class="rect5"></div>
+            </div>
+        </div>
+    </div>
+    <div class="row" *ngIf="!loading">
+        <app-knowledge-list-tree-view class="col-md-12"
+            [categories]="categories" (knowledgeSelected)="selectKnowledge($event)"></app-knowledge-list-tree-view>
+        <!-- <app-knowledge class="col-md-8 knowledge-embedded" *ngIf="selectedKnowledgeId" [knowledgeId]="selectedKnowledgeId"></app-knowledge> -->
+    </div>
+</div>

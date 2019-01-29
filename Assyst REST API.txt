@@ -1,0 +1,331 @@
+http://wiki.axiossystems.com/assyst10SP7Wiki/index.php/assystREST
+
+https://assystweb-hml.trt4.jus.br/assystREST/v2/raml
+https://assystweb-hml.trt4.jus.br/assystREST/v2/events/raml
+https://assystweb-hml.trt4.jus.br/assystREST/v2/events/5073510 -> evento R73510
+Campo callbackRequired diz se é preciso tomar ciência
+https://assystweb-hml.trt4.jus.br/assystREST/v2/events/5073488/availableActionTypes/23 -> Ações disponíveis para a SM efetuar no chamado
+https://assystweb-hml.trt4.jus.br/assystREST/v2/actions/actionHistory/5073280 -> Ações efetuadas no evento R73280
+https://assystweb-hml.trt4.jus.br/assystREST/v2/actionTypes/3 -> Tomar ciência
+
+https://assystweb.trt4.jus.br/assystREST/v2/events?assignedUserId=279&eventType=INCIDENT,CHANGE,PROBLEM,NORMALTASK,DECISIONTASK,AUTHORISATIONTASK,SERVICEREQUEST,ORDER&eventStatus=OPEN -> todos os eventos atribuídos ao Dinei
+https://assystweb.trt4.jus.br/assystREST/v2/events?assignedUserId=279&eventType=CHANGE&eventStatus=OPEN -> eventos de Mudança atribuídos ao Dinei
+
+Eventos vinculados ao evento devido à pedido de aprovação de conhecimento:
+https://assystweb-hml.trt4.jus.br/assystREST/v2/events/5073777
+https://assystweb-hml.trt4.jus.br/assystREST/v2/linkedEventGroups?linkEventId=5073777&linkReasonId=14&fields=linkedEvents
+https://assystweb-hml.trt4.jus.br/assystREST/v2/events/10024542
+https://assystweb-hml.trt4.jus.br/assystREST/v2/events/10024542/availableActionTypes/23 <- REVIEW-REQUEST
+
+https://assystweb-hml.trt4.jus.br/assystREST/v2/serviceCatalog/serviceOfferings -> tabela SERV_OFF no banco
+https://assystweb-hml.trt4.jus.br/assystREST/v2/serviceCatalog/serviceOfferings/?parentServiceId=312 -> Serviços de acesso
+https://assystweb-hml.trt4.jus.br/assystREST/v2/serviceCatalog/serviceOfferings/2658 -> Redefinição de Senha para Caixa Postal Setorial
+https://assystweb-hml.trt4.jus.br/assystREST/v2/serviceCatalog/serviceOfferings/201 -> Redefinição de Senha nos Sistemas
+https://assystweb-hml.trt4.jus.br/assystREST/v2/serviceCatalog/serviceOfferings/563 -> Estagiários - Inclusão/Alteração de Acessos
+https://assystweb-hml.trt4.jus.br/assystREST/v2/serviceCatalog/serviceOfferings/556 -> Inclusão/Alteração de Acessos
+https://assystweb-hml.trt4.jus.br/assystREST/v2/serviceCatalog/serviceOfferings/559 -> Remoção de Acessos
+https://assystweb-hml.trt4.jus.br/assystREST/v2/serviceCatalog/serviceOfferings/2656 -> Estagiários - Remoção de Acessos
+https://assystweb-hml.trt4.jus.br/assystREST/v2/serviceCatalog/serviceOfferings/2657 -> Solicitação de Caixa Postal Setorial ou Grupo de Correio
+
+https://assystweb-hml.trt4.jus.br/assystREST/v2/serviceDepartments/31 -> serviceDepartment de Gerenciamento de Conhecimento
+
+https://assystweb-hml.trt4.jus.br/assystREST/v2/serviceDepartments/23 -> serviceDepartment da Seção de Microinformática
+https://assystweb-hml.trt4.jus.br/assystREST/v2/departmentNames/66 -> departmentName da Seção de Microinformática
+https://assystweb-hml.trt4.jus.br/assystREST/v2/departments/66 -> department da Seção de Microinformática
+
+https://assystweb-hml.trt4.jus.br/assystREST/v2/queryProfiles/141 -> queryProfile "4. SM - Eventos de Acessos Abertos"
+https://assystweb-hml.trt4.jus.br/assystREST/v2/events/queryProfiles/141 -> eventos do monitor/queryProfile "4. SM - Eventos de Acessos Abertos"
+
+https://assystweb-hml.trt4.jus.br/assystREST/v2/assystUsers/279 -> assystUser do Dinei
+https://assystweb-hml.trt4.jus.br/assystREST/v2/contactUsers/4116 -> contactUser do Dinei
+
+https://assystweb.trt4.jus.br/assystREST/v2/knowledgeProcedures/917 -> conhecimento 917 (Sala de audiência: Instalação dos equipamentos)
+https://assystweb-hml.trt4.jus.br/assystREST/v2/knowledgeProcedures?name[like]=%25DIMEP -> conhecimentos que possuem "DIMEP" no nome
+
+
+Tomar ciência em um chamado:
+
+POST https://assystweb-hml.trt4.jus.br/assystREST/v2/actions
+Accept: application/json, text/javascript, */*; q=0.01
+Content-Type: application/json
+{
+    "eventId": 5073514,
+    "remarks": "Teste",
+    "actionType": {
+        "resolvingParameters": [
+            {
+                "parameterName": "shortCode",
+                "parameterValue": "USER-CALLBACK"
+            }
+        ]
+    }
+}
+-- ou --
+<action>
+    <eventId>5073514</eventId>
+    <remarks>Teste</remarks>
+    <actionType>
+        <resolvingParameters>
+            <parameterName>id</parameterName>
+            <parameterValue>3</parameterValue>
+        </resolvingParameters>
+    </actionType>
+</action>
+
+FLUXO DE APROVAÇÃO DE CONHECIMENTO:
+- Pede aprovação
+- Pega o conhecimento criado pra ti (se precisar toma ciência)
+- Pega o conhecimento D pra ti
+- Ação "Realizar decisão"
+
+Tomar ciência em chamado de conhecimento:
+Tentativa normal:
+{
+    "type": "ComplexValidationException",
+    "message": "A complex validation error has been detected by the application.",
+    "messageKey": "rest.exceptions.ComplexValidationException",
+    "errors": [
+        {
+            "rule": "canTakeActionOnEvent",
+            "field": "actionType",
+            "messageKey": "server.validation.errors.canTakeActionOnEvent",
+            "message": "You do not have permission to take actions of this type on this event.",
+            "diagnostic": "shortCode=USER-CALLBACK",
+            "objectFailingValidationClass": "com.axiossystems.assyst.dto.actions.ActionDto"
+        }
+    ]
+}
+
+
+POST https://assystweb-hml.trt4.jus.br/assystREST/v2/actions
+Accept: application/json, text/javascript, */*; q=0.01
+Content-Type: application/json
+{
+    "eventId": 5073514,
+    "remarks": "Teste",
+    "actionType": {
+        "resolvingParameters": [
+            {
+                "parameterName": "shortCode",
+                "parameterValue": "USER-CALLBACK"
+            }
+        ]
+    },
+    "actionedBy": {
+        "resolvingParameters": [
+            {
+                "parameterName": "shortCode",
+                "parameterValue": "DINEIR"
+            }
+        ]
+    },
+    "actioningServDept": {
+        "resolvingParameters": [
+            {
+                "parameterName": "shortCode",
+                "parameterValue": "GER CONHECIMENT"
+            }
+        ]
+    }
+}
+
+POST https://assystweb-hml.trt4.jus.br/assystREST/v2/actions
+Accept: application/json, text/javascript, */*; q=0.01
+Content-Type: application/json
+{
+    "eventId": 10033868,
+    "remarks": "Decisão de teste: aprovado",
+    "decision": {
+        "answer": "CONH APROVADO"
+    },
+    "actioningServDept": {
+        "resolvingParameters": [
+            {
+                "parameterName": "shortCode",
+                "parameterValue": "GER CONHECIMENT"
+            }
+        ]
+    }
+
+
+    -- Provavelmente desnecessário:
+    "actionType": {
+        "resolvingParameters": [
+            {
+                "parameterName": "shortCode",
+                "parameterValue": "MAKE DECISION"
+            }
+        ]
+    }
+}
+
+
+resourceTypes
+/actions
+/actionTypes
+/activityCategories
+/activities
+/alertBuilders
+/application
+/assignableServiceDepartments
+/assignees
+/systems
+/assystUsers
+/attachedProcesses
+/branchContacts
+/branches
+/buildingContacts
+/buildings
+/businessEntityMetaData
+/csgMemberships
+/csgs
+/categories
+/changeFreezes
+/changeFreezeSystems
+/chargeCodes
+/collaborations
+/collaborationTags
+/columnProfiles
+/companies
+/configurationCharacteristics
+/contactUserQueryProfiles
+/contactUsers
+/costCentres
+/costTypes
+/definitions
+/dashboardReportDefinitions
+/departmentContacts
+/departmentNames
+/departments
+/departmentSlas
+/destinations
+/raml
+/divisions
+/emailContactDetails
+/email
+/templates
+/escalationUsers
+/eventAdditionalAffectedUsers
+/eventBuilders
+/eventMonitor
+/events
+/externalLinks
+/feedbackCategories
+/formDefinitions
+/formProperty
+/genericClasses
+/holidayPlans
+/icons
+/importActionProfiles
+/importProfiles
+/itemChanges
+/itemConfigurations
+/itemCosts
+/itemMaintenances
+/itemMovements
+/itemNotes
+/itemRelations
+/items
+/itemStatuses
+/itemSystems
+/knowledgeBuilders
+/knowledgeProcedureCategoryContactUserQueryProfiles
+/knowledgeProcedureCategories
+/knowledgeProcedureEntities         -> palavras-chave do conhecimento
+/knowledgeProcedures                -> conhecimentos (Procedimento de conhecimento)
+/linkReasons
+/linkedEventGroups                  -> eventos vinculados (Vínculos) - https://wiki.axiossystems.com/assyst10SP7Wiki/index.php/assystREST#Linked_Events
+/linkedItemGroups
+/localeCodes
+/maintenanceContracts
+/maintenanceSlas
+/maintenanceWindows
+/maintenanceWindowSystems
+/majorCategories
+/messageCategories
+/messageReads
+/messages                           -> mensagens na tela inicial
+/movementReasons
+/person
+/priorityDeriveds
+/priorityDerivedRules
+/priorities
+/privilegeGroups
+/productClasses
+/productCosts
+/products
+/productStatuses
+/productVersionChanges
+/productVersions
+/projects
+/purchaseOrders
+/queryProfiles
+/recurringMaintenanceWindows
+/recurringMaintenanceWindowSystems
+/relatedKnowledgeProcedures
+/relationDetails
+/relationTypes
+/rentalsAndLeases
+/replies
+/reportContactUserShares
+/reportDesigns
+/reportLibraries
+/reportResults
+/roomContacts
+/roomNames
+/rooms
+/scoreDescriptions
+/scoredEventBuilders
+/searching
+/secondaryServiceDepartments
+/sectionClasses
+/sectionContacts
+/sections
+/seriousnesses
+/servDeptEmailTemplates
+/serviceCatalog
+/serviceCosts
+/serviceDepartmentActionTypes
+/serviceDepartments
+/serviceOfferingBundleComponents
+/serviceOfferingContactUserQueryProfiles
+/serviceOfferingCosts
+/serviceOfferingDemands
+/serviceCatalog/serviceOfferings
+/serviceRelations
+/serviceCatalog/services
+/serviceStakeholders
+/serviceSystems
+/shiftDetails
+/siteAreas
+/sites
+/skills
+/slaPriorities
+/serviceLevelAgreements
+/serviceLevelAgreementSeriousnesses
+/socialBadges
+/socialPersonBadges
+/socialPersonSkills
+/socialSkills
+/substitutionKeyword
+/supplierContacts
+/suppliers
+/surveyDefinitions
+/surveyRequests
+/templateBuilders
+/templateProcessCategories
+/templateProcesses
+/templateProcessStagePropertyDefintionLink
+/templateProcessStages
+/templateProcessTasks
+/templateSubProcesses
+/tenants
+/territories
+/textTags
+/userGroups
+/userItemLinkReasons
+/userItems
+/userPreferences
+/userRoles
+/userSkills
+/webSharedCustomColumns

@@ -1,0 +1,99 @@
+<div *ngFor="let alert of layoutHelper.getAlerts()" class="alert {{alert.getCSSClass()}} alert-absolute">
+    <div class="container">
+        <i class="material-icons alert-icon">{{alert.getIcon()}}</i>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true"><i class="material-icons">clear</i></span></button>
+        <span>{{alert.getMessage()}}</span>
+    </div>
+</div>
+<div class="login-page sidebar-collapse">
+    <nav class="navbar navbar-transparent navbar-color-on-scroll fixed-top navbar-expand-lg" color-on-scroll="100" id="sectionsNav">
+        <div class="container">
+            <div class="navbar-translate">
+                <a class="navbar-brand" [routerLink]="['/']">
+                    Assyst Front
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="navbar-toggler-icon"></span>
+                    <span class="navbar-toggler-icon"></span>
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+    <div class="page-header header-filter" style="background-image: url('assets/vendor/material-kit-html-v2.0.4/assets/img/bg7.jpg'); background-size: cover; background-position: top center;">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 ml-auto mr-auto">
+                    <div class="card card-login">
+                        <form class="form" #loginForm="ngForm" (ngSubmit)="authenticate()">
+                            <div class="card-header card-header-primary text-center">
+                                <h4 class="card-title">Login</h4>
+                                <!-- <div class="social-line">
+                                  <a href="#pablo" class="btn btn-just-icon btn-link">
+                                      <i class="fa fa-facebook-square"></i>
+                                  </a>
+                                  <a href="#pablo" class="btn btn-just-icon btn-link">
+                                      <i class="fa fa-twitter"></i>
+                                  </a>
+                                  <a href="#pablo" class="btn btn-just-icon btn-link">
+                                      <i class="fa fa-google-plus"></i>
+                                  </a>
+                              </div> -->
+                            </div>
+                            <p class="description text-center">Informe suas credenciais do Assyst</p>
+                            <div class="card-body">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="material-icons">face</i>
+                                        </span>
+                                    </div>
+                                    <input [(ngModel)]="username" name="username" id="inputLogin" type="text" class="form-control" placeholder="Nome de usuário..." required>
+                                </div>
+                                <!-- <div class="input-group">
+                                  <div class="input-group-prepend">
+                                      <span class="input-group-text">
+                                          <i class="material-icons">mail</i>
+                                      </span>
+                                  </div>
+                                  <input type="email" class="form-control" placeholder="Email...">
+                              </div> -->
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="material-icons">lock_outline</i>
+                                        </span>
+                                    </div>
+                                    <input [(ngModel)]="password" name="password" id="inputPassword" type="password" class="form-control" placeholder="Senha...">
+                                </div>
+                                <!-- <small id="loginHelp" class="form-text text-muted">Ele ficará gravado .</small> -->
+                            </div>
+                            <div class="footer text-center">
+                                <!-- <button type="submit" class="btn btn-primary btn-link btn-wd btn-lg" onclick="return loginView.login($('#inputLogin').val(), $('#inputPassword').val())">Login</button> -->
+                                <button type="submit" class="btn btn-primary btn-link btn-wd btn-lg" [disabled]="!loginForm.form.valid">Login</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="footer">
+            <div class="container">
+                <nav class="float-left">
+                    <ul>
+                        <li>
+                            <a href="http://portalsm.trt4.gov.br/">
+                                Seção de Microinformática
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- <div class="copyright float-right">
+                  Template made with <i class="material-icons">favorite</i> by
+                  <a href="https://www.creative-tim.com" target="_blank">Creative Tim</a> for a better web.
+              </div> -->
+            </div>
+        </footer>
+    </div>
+</div>

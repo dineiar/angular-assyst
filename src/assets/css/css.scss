@@ -1,0 +1,139 @@
+@import "mixins";
+@import "material-icons.css";
+
+// Corrections on vendor CSSs
+.card-login .form {
+    min-height: 300px;
+}
+span.form-control-plaintext,
+p.form-control-plaintext {
+    font-weight: 400;
+}
+
+.no-data {
+    text-align: center;
+    font-variant: small-caps;
+    background: #fff9ce;
+    padding: 6px;
+}
+// .label-required::after {
+//     content: " *";
+//     color: red;
+// }
+.code-break {
+    word-break: break-all;
+}
+.alert.alert-absolute {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1050;
+    width: 100%;
+}
+.event-row .loading > .default-loader {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+.navbar .navbar-nav .nav-item .profile-photo-small {
+    line-height: 40px;
+
+    > .material-icons {
+        font-size: 40px;
+    }
+}
+.knowledge-badge-container {
+    display: flex;
+    align-items: center;
+}
+.knowledge-badge-container > div {
+    margin: 0 15px;
+}
+
+// Loader
+@mixin default-loader($factor) {
+    $width: 60px * $factor; //Se usar 50px o Chrome quebra pra small e xsmall
+    $heigth: 40px * $factor;
+    $margin: $width / 5;
+    $columnWidth: $width / 10;
+    $absCenterMarginRight: $width / 2 * -1;
+    $absCenterMarginTop: $heigth / 2 * -1;
+
+    width: $width;
+    height: $heigth;
+    margin: $margin auto;
+
+    > div {
+        width: $columnWidth;
+    }
+
+    &.absolute-center {
+        margin: $absCenterMarginTop 0 0 $absCenterMarginRight;
+    }
+}
+.default-loader {
+    text-align: center;
+    font-size: 10px;
+
+    $timeDelay: 1.2;
+    > div {
+        background-color: #b5bbc8;
+        height: 100%;
+        display: inline-block;
+        @include animation('stretchdelay ' + $timeDelay + 's infinite ease-in-out');
+    }
+    &.invert > div {
+        @include animation('stretchdelayinvert ' + $timeDelay + 's infinite ease-in-out');
+    }
+    @for $i from 2 through 5 {
+        .rect#{$i},
+        &.invert > div.rect#{$i} {
+            -webkit-animation-delay: #{($timeDelay + 0.1 - $i/10) * -1}s;
+            animation-delay: #{($timeDelay + 0.1 - $i/10) * -1}s;
+        }
+    }
+
+    &.absolute-center {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+    }
+
+    @include default-loader(1);
+
+    &.xsmall {
+        @include default-loader(0.3);
+    }
+
+    &.small {
+        @include default-loader(0.5);
+    }
+
+    &.big {
+        @include default-loader(2);
+    }
+}
+
+@include keyframes(stretchdelay) {
+  0%,
+  40%,
+  100% {
+    @include transform-scaleY(0.4);
+    background-color: #0073b7;
+  }
+  20% {
+    @include transform-scaleY(1);
+    background-color: #b5bbc8;
+  }
+}
+@include keyframes(stretchdelayinvert) {
+  0%,
+  40%,
+  100% {
+    @include transform-scaleY(0.4);
+    background-color: #7fb9db;
+  }
+  20% {
+    @include transform-scaleY(1);
+    background-color: #ffffff;
+  }
+}
