@@ -1,0 +1,20 @@
+/* from https://stackoverflow.com/questions/35001518/inexplicable-empty-space-on-print-from-chrome
+and knowledge/1581
+and knowledge/1428
+*/
+@page {
+    size: A4 portrait;
+}
+.navbar.navbar-expand-lg,
+.navbar.navbar-expand-md {
+    display: none;
+}
+#knowledge-name {
+    font-weight: bold;
+}
+.knowledge-review-version-select .nav-item a.nav-link:not(.active) {
+    display: none;
+}
+.image-wrapper > a {
+    display: none;
+}
