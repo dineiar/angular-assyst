@@ -63,7 +63,7 @@ export class HomeComponent implements OnInit, AfterViewChecked {
         this.loadingEvents = true;
         this.assyst.getEventsByQueryProfile(this.queryProfileId)
             .subscribe((data: AssystEvent[]) => {
-                console.log('Events',data);
+                // console.log('Events',data);
                 this.events = data;
                 this.loadingEvents = false;
                 if (this.autoCallback) {
