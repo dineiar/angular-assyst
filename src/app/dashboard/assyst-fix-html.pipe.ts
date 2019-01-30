@@ -86,8 +86,8 @@ export class AssystFixHtmlPipe implements PipeTransform {
                         console.log('Log', link, 'Aux:', aux);
                     }
                     if (aux && aux[1]) {
-                        // html = html.replace(link, '<a href="/dash/knowledge/' + aux[1] + '">');
-                        html = html.replace(link, '<a href="' + this.router.serializeUrl(this.router.createUrlTree(['/dash/knowledge', aux[1]])) + '">');
+                        html = html.replace(link, '<a href="dash/knowledge/' + aux[1] + '">');
+                        // html = html.replace(link, '<a href="' + this.router.serializeUrl(this.router.createUrlTree(['dash/knowledge', aux[1]])) + '">');
                     }
                 });
             }
