@@ -7,6 +7,10 @@
             "label": "Build GitHub Pages",
             "type": "shell",
             "command": "ng build --prod --output-path docs --base-href /angular-assyst/ && cp docs/index.html docs/404.html",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
             "problemMatcher": []
         }
     ]
