@@ -1,4 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { Router } from '@angular/router';
 import { AssystAPIService } from '../assyst/assyst-api.service';
 import { LayoutHelperService } from '../layout-helper.service';
 
@@ -11,6 +12,7 @@ export class AssystFixHtmlPipe implements PipeTransform {
     private idLoadingImage: number = 0;
 
     constructor (
+        private router: Router,
         private assyst: AssystAPIService,
         private layoutHelper: LayoutHelperService
     ) { }
@@ -84,7 +86,8 @@ export class AssystFixHtmlPipe implements PipeTransform {
                         console.log('Log', link, 'Aux:', aux);
                     }
                     if (aux && aux[1]) {
-                        html = html.replace(link, '<a href="/dash/knowledge/' + aux[1] + '">');
+                        // html = html.replace(link, '<a href="/dash/knowledge/' + aux[1] + '">');
+                        html = html.replace(link, '<a href="' + this.router.serializeUrl(this.router.createUrlTree(['/dash/knowledge', aux[1]])) + '">');
                     }
                 });
             }
