@@ -65,6 +65,9 @@ export class AssystAPIService {
         }
         return this.user;
     }
+    public isMicroinformatica(): boolean {
+        return this.getLoggedUser() && this.getLoggedUser().servDeptId == 23;
+    }
 
     public getRESTEndpoint(endpoint: string, parameters?: {}): string {
         var r = this.urlRest + endpoint;

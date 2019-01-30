@@ -1,5 +1,5 @@
 <div class="main container-fluid container-view" id="container-dashboard" style="padding: 15px;">
-    <div class="row">
+    <div class="row" *ngIf="assyst.isMicroinformatica()">
         <div class="col-lg-8">
             <h4 class="pull-left">
                 {{events ? events.length : ''}} chamados de acesso

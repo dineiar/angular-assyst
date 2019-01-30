@@ -23,7 +23,7 @@ export class HomeComponent implements OnInit, AfterViewChecked {
 
     constructor(
         private preferences: PreferencesService,
-        private assyst: AssystAPIService,
+        public assyst: AssystAPIService,
         private layoutHelper: LayoutHelperService,
     ) { }
 
