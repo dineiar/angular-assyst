@@ -332,32 +332,34 @@ export class AssystAPIService {
                         // Deve haver apenas 1 vínculo
                         linkedEventGroups[0].linkedEvents.forEach(evt => {
                             if (evt.linkedEventId != knowledge.lifecycleEventId) {
-                                // let urlAvailableActions = this.getRESTEndpoint('events/' + evt.linkedEventId + '/availableActionTypes/' + this.knowledgeManagementServDeptId);
-                                // this.http.get(urlAvailableActions, this.getHttpOptions())
+                                // let urlAvailableActions = $this.getRESTEndpoint('events/' + evt.linkedEventId + '/availableActionTypes/' + $this.knowledgeManagementServDeptId);
+                                // $this.http.get(urlAvailableActions, $this.getHttpOptions())
                                 //     .subscribe((actionTypes) => {
-                                //         console.log('Available actions for event', evt.linkedEventId, 'and sector', this.knowledgeManagementServDeptId, actionTypes);
+                                //         console.log('Available actions for event', evt.linkedEventId, 'and sector', $this.knowledgeManagementServDeptId, actionTypes);
                                 //     });
-                                
-                                this.assignEventTo(evt.linkedEventId, this.knowledgeManagementServDeptId, user.id, 'Atribuindo' + remarks)
+                                var doMakeDecision = function() {
+                                    $this.makeDecision(evt.linkedEventId, approve ? 'Sim' : 'Não', 'Revisando o conhecimento de id ' + knowledge.id)
+                                        .subscribe(
+                                            data => {
+                                                $this.onBehalfOfServDept = null;
+                                                callback ? callback(true, data) : null;
+                                            },
+                                            error => {
+                                                console.log('Erro ao tomar a decisão', error);
+                                                $this.layoutHelper.setAlert(AlertLevels.Danger, 'Erro ao aprovar/rejeitar o conhecimento ' + knowledge.id);
+                                                callback ? callback(false, error) : null;
+                                            }
+                                        );
+                                }
+                                $this.assignEventTo(evt.linkedEventId, $this.knowledgeManagementServDeptId, user.id, 'Atribuindo' + remarks)
                                     .subscribe(
-                                        data => {
-                                            this.makeDecision(evt.linkedEventId, approve ? 'Sim' : 'Não', 'Revisando o conhecimento de id ' + knowledge.id)
-                                                .subscribe(
-                                                    data => {
-                                                        $this.onBehalfOfServDept = null;
-                                                        callback ? callback(true, data) : null;
-                                                    },
-                                                    error => {
-                                                        console.log('Erro ao tomar a decisão', error);
-                                                        $this.layoutHelper.setAlert(AlertLevels.Danger, 'Erro ao aprovar/rejeitar o conhecimento ' + knowledge.id);
-                                                        callback ? callback(false, error) : null;
-                                                    }
-                                                );
-                                        },
+                                        data => doMakeDecision(),
                                         error => {
+                                            // Para o Diego da SAU sempre cai aqui, aparentemente ele não tem permissão para atribuir o chamado para si
                                             console.log('Erro ao atribuir chamado de decisão para si', error);
-                                            $this.layoutHelper.setAlert(AlertLevels.Danger, 'Erro ao atribuir o chamado de aprovação do conhecimento ' + knowledge.id);
-                                            callback ? callback(false, error) : null;
+                                            // $this.layoutHelper.setAlert(AlertLevels.Danger, 'Erro ao atribuir o chamado de aprovação do conhecimento ' + knowledge.id);
+                                            // callback ? callback(false, error) : null;
+                                            doMakeDecision();
                                         }
                                     );
     

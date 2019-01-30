@@ -99,7 +99,7 @@ export class KnowledgeComponent implements OnInit {
     loadKnowledgeBreadcrumbRecursive(knowledgeProcedureCategoryId: number) {
         this.assyst.getKnowledgeCategory(knowledgeProcedureCategoryId)
             .subscribe(category => {
-                console.log('category', category);
+                // console.log('category', category);
                 this.knowledgeCategories.unshift(category);
                 if (category.parentKnowledgeProcedureCategoryId) {
                     this.loadKnowledgeBreadcrumbRecursive(category.parentKnowledgeProcedureCategoryId);
