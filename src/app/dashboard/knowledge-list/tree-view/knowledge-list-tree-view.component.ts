@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { AssystKnowledgeCategory, AssystKnowledge } from 'src/app/assyst/assyst-dto';
 import { AssystAPIService } from 'src/app/assyst/assyst-api.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
     selector: 'app-knowledge-list-tree-view',
@@ -32,7 +33,11 @@ export class KnowledgeListTreeViewComponent implements OnInit {
                         parentCategory.childrenCategories == null || parentCategory.childrenKnowledges == null
                     );
                 });
-            this.assyst.getKnowledges({'categoryId': parentCategory.id, 'discontinued': false})
+            var filters = {'categoryId': parentCategory.id};
+            if (environment.ignore_retired_knowledge) {
+                filters['discontinued'] = false;
+            }
+            this.assyst.getKnowledges(filters)
                 .subscribe(knowledges => {
                     parentCategory.childrenKnowledges = knowledges;
                     parentCategory.loadingChildren = (

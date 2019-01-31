@@ -1,6 +1,6 @@
 <ul *ngIf="categories || knowledges" class="list-unstyled list-knowledge-categories">
     <li *ngFor="let category of categories" class="icon-text-aligned">
-        <a href="javascript:void(0);" (click)="loadChildCategories(category)">
+        <a href="javascript:void(0);" (click)="loadChildCategories(category)" [ngClass]="{'text-muted': category.discontinued}">
             <i class="material-icons" *ngIf="!category.loadingChildren && !category.showingChildren">expand_more</i>
             <i class="material-icons" *ngIf="!category.loadingChildren && category.showingChildren">expand_less</i>
             <i class="material-icons animate-roll" *ngIf="category.loadingChildren">cached</i>
@@ -15,7 +15,7 @@
         </ul>
     </li>
     <li *ngFor="let knowledge of knowledges" class="icon-text-aligned">
-        <a [routerLink]="['/dash/knowledge', knowledge.id]" target="_blank">
+        <a [routerLink]="['/dash/knowledge', knowledge.id]" target="_blank" [ngClass]="{'text-muted': knowledge.discontinued}">
         <!-- <a href="javascript:void(0);" (click)="selectKnowledge(knowledge.id)"> -->
             <!-- <i class="material-icons">insert_drive_file</i> -->
             <i *ngIf="knowledge.procedureStatus == 1" class="material-icons text-warning" title="Esboço de conhecimento">warning</i>

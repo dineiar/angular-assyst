@@ -5,6 +5,7 @@
 export const environment = {
     production: false,
     assyst_host: 'https://assystweb-hml.trt4.jus.br/',
+    ignore_retired_knowledge: false,
 };
 
 /*

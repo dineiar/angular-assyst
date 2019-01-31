@@ -276,7 +276,10 @@ export class AssystAPIService {
         return this.http.get<AssystKnowledgeCategory>(url, this.getHttpOptions());
     }
     public getKnowledgeCategories(parentKnowledgeCategoryId?: number): Observable<AssystKnowledgeCategory[]> {
-        var parms = {'discontinued': false};
+        var parms = {};
+        if (environment.ignore_retired_knowledge) {
+            parms['discontinued'] = false;
+        }
         if (typeof parentKnowledgeCategoryId != 'undefined') {
             parms['parentKnowledgeProcedureCategoryId'] = parentKnowledgeCategoryId;
         }
