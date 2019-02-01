@@ -37,6 +37,15 @@
                             </label>
                         </div>
                     </div>
+                    <div class="dropdown-item">
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" [(ngModel)]="notifyNewEvents" name="notifyNewEvents" id="notifyNewEvents" type="checkbox" (change)="notifyNewEventsChanged()">
+                                Notificar novos chamados
+                                <span class="form-check-sign"><span class="check"></span></span>
+                            </label>
+                        </div>
+                    </div>
                     <!-- <div class="dropdown-divider"></div>
                     <a href="javascript:void(0);" class="dropdown-item">Item</a> -->
                 </div>
@@ -59,7 +68,7 @@
                         <th scope="col">Usuário afetado</th>
                         <th scope="col">Notas de retorno</th>
                         <th scope="col" [hidden]="autoCallback" class="text-center">Ciência</th>
-                        <th scope="col" class="text-center">Atribuir</th>
+                        <!-- <th scope="col" class="text-center">Atribuir</th> -->
                     </tr>
                 </thead>
                 <tbody>
@@ -100,7 +109,7 @@
                             </a>
                             <i *ngIf="!evt.loadingCallback && !evt.callbackRequired" class="material-icons text-success">check</i>
                         </td>
-                        <td class="event-assign text-center">
+                        <!-- <td class="event-assign text-center">
                             <a [hidden]="!evt.loadingAssign" href="javascript:void(0);" title="Atribuindo..." class="loading">
                                 <div class="default-loader small">
                                     <div class="rect1"></div>
@@ -113,7 +122,7 @@
                             <a [hidden]="evt.loadingAssign" href="javascript:void(0);" (click)="assignToMe(evt)" title="Atribuir a...">
                                 <i class="material-icons">forward</i>
                             </a>
-                        </td>
+                        </td> -->
                     </tr>
                     <tr *ngIf="loadingEvents && !events" class="event-row-init-loader">
                         <td colspan="100" style="text-align: center;">

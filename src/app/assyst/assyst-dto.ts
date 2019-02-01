@@ -14,6 +14,7 @@ export enum AssystEventSubType {
 }
 export class AssystEvent {
     public id: number;
+    public formattedReference: string;
     public reportingUserName: string;
     public reportingUserTelephoneExtension: string;
     public affectedUserName: string;

@@ -3,7 +3,9 @@ import { Title } from '@angular/platform-browser';
 import { PreferencesService } from 'src/app/preferences.service';
 import { AssystAPIService } from 'src/app/assyst/assyst-api.service';
 import { AssystEvent } from 'src/app/assyst/assyst-dto';
-import { LayoutHelperService } from 'src/app/layout-helper.service';
+import { LayoutHelperService, AlertLevels } from 'src/app/layout-helper.service';
+import { AssystEventDatePipe } from '../assyst-event-date.pipe';
+import { AssystPersonNamePipe } from '../assyst-person-name.pipe';
 
 @Component({
     selector: 'app-home',
@@ -12,9 +14,13 @@ import { LayoutHelperService } from 'src/app/layout-helper.service';
 })
 export class HomeComponent implements OnInit, AfterViewChecked {
     autoCallback: boolean;
+    notifyNewEvents: boolean;
     eventCount: number;
     loadingEvents: boolean;
-    events: AssystEvent[];
+    events: AssystEvent[] = null;
+
+    assystEventDatePipe: AssystEventDatePipe = new AssystEventDatePipe();
+    assystPersonNamePipe: AssystPersonNamePipe = new AssystPersonNamePipe();
 
     queryProfileId = 141; // Chamados de acesso
 
@@ -32,6 +38,7 @@ export class HomeComponent implements OnInit, AfterViewChecked {
     ngOnInit() {
         this.titleService.setTitle('Chamados de acesso Assyst');
         this.autoCallback = this.preferences.getPreference('autoCallback');
+        this.notifyNewEvents = this.preferences.getPreference('notifyNewEvents');
         // this.loadEvents();
         this.startEventsMonitor();
     }
@@ -44,6 +51,52 @@ export class HomeComponent implements OnInit, AfterViewChecked {
 
     autoCallbackChanged(): void {
         this.preferences.setPreference('autoCallback', this.autoCallback);
+    }
+    notifyNewEventsChanged(askPermission: boolean = true): void {
+        if (!("Notification" in window)) {
+            this.notifyNewEvents = false;
+            this.layoutHelper.setAlert(AlertLevels.Warning, 'Este navegador não possui suporte à notificações.');
+        } else {
+            if (this.checkNotificationPermission() == 'denied') {
+                this.notifyNewEvents = false;
+                this.layoutHelper.setAlert(AlertLevels.Warning, 'O acesso à notificações está bloqueado.');
+            }
+        }
+        this.preferences.setPreference('notifyNewEvents', this.notifyNewEvents);
+    }
+    checkNotificationPermission(permission?: string, askPermission: boolean = true): string {
+        if (!permission) {
+            permission = Notification.permission;
+        }
+        if (permission == 'default') {
+            if (askPermission) {
+                Notification.requestPermission(permission => {
+                    this.notifyNewEventsChanged(false);
+                });
+            }
+        }
+        return permission;
+    }
+    newEvents(events: AssystEvent[]): void {
+        if (this.notifyNewEvents) {
+            events.forEach(evt => {
+                var title = 'Novo chamado: ' + evt.formattedReference;
+                var body = '';
+                if (evt.alertStatus > 1) {
+                    body += '[ALERTA] '
+                }
+                body += '[' + this.assystEventDatePipe.transform(evt.dateLogged) + ']';
+                body += ' De ' + this.assystPersonNamePipe.transform(evt.reportingUserName);
+                var not = new Notification(title, {
+                    body: body,
+                    icon: '/assets/images/axios_32x32.png',
+                    // actions: []
+                });
+                not.onclick = () => {
+                    var win = window.open(this.assyst.getLinkEvent(evt.id), '_blank');
+                };
+            })
+        }
     }
 
     startEventsMonitor(): void {
@@ -67,6 +120,16 @@ export class HomeComponent implements OnInit, AfterViewChecked {
         this.assyst.getEventsByQueryProfile(this.queryProfileId)
             .subscribe((data: AssystEvent[]) => {
                 // console.log('Events',data);
+                if (this.events != null) { //we do not notify about the first get
+                    this.newEvents(data.filter((evt) => {
+                        for(var i = 0; i < this.events.length; i++) {
+                            if (evt.id == this.events[i].id) {
+                                return false;
+                            }
+                        }
+                        return true;
+                    }));
+                }
                 this.events = data;
                 this.titleService.setTitle(data.length + ' chamados de acesso Assyst');
                 this.loadingEvents = false;
