@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 import { AssystAPIService } from 'src/app/assyst/assyst-api.service';
 import { AssystKnowledgeCategory } from 'src/app/assyst/assyst-dto';
 
@@ -14,12 +15,14 @@ export class KnowledgeListComponent implements OnInit {
 
     constructor(
         private router: Router,
-        private assyst: AssystAPIService
+        private assyst: AssystAPIService,
+        private titleService: Title
     ) { }
 
     ngOnInit() {
         this.loading = true;
         this.loadCategories();
+        this.titleService.setTitle('Conhecimentos Assyst');
     }
 
     loadCategories() {

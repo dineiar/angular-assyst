@@ -13,13 +13,41 @@
             </div>
         </div>
         <div class="col-lg-4">
-            <div class="togglebutton pull-right">
+            <div class="dropdown pull-right">
+                <a href="javascript:void(0);" class="btn btn-sm btn-link dropdown-toggle" data-toggle="dropdown">
+                    <i class="material-icons">settings</i>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <div class="togglebutton dropdown-item">
+                        <!-- <label>
+                            <input [(ngModel)]="autoCallback" name="autoCallback" id="autoCallback" type="checkbox" (change)="autoCallbackChanged()">
+                            Tomar ciência automaticamente
+                            <span class="toggle"></span>
+                        </label> -->
+                        <!-- <label class="form-check-label">
+                            <input class="form-check-input" [(ngModel)]="autoCallback" name="autoCallback" id="autoCallback" type="checkbox" (change)="autoCallbackChanged()">
+                            Tomar ciência automaticamente
+                            <span class="form-check-sign"><span class="check"></span></span>
+                        </label> -->
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" [(ngModel)]="autoCallback" name="autoCallback" id="autoCallback" type="checkbox" (change)="autoCallbackChanged()">
+                                Tomar ciência automaticamente
+                                <span class="form-check-sign"><span class="check"></span></span>
+                            </label>
+                        </div>
+                    </div>
+                    <!-- <div class="dropdown-divider"></div>
+                    <a href="javascript:void(0);" class="dropdown-item">Item</a> -->
+                </div>
+            </div>
+            <!-- <div class="togglebutton pull-right">
                 <label>
                     <input [(ngModel)]="autoCallback" name="autoCallback" id="autoCallback" type="checkbox" (change)="autoCallbackChanged()">
                     Tomar ciência automaticamente
                     <span class="toggle"></span>
                 </label>
-            </div>
+            </div> -->
         </div>
         <div class="col-lg-12">
             <table class="table table-sm" id="tblEvents">

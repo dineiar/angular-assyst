@@ -19,6 +19,19 @@ p.form-control-plaintext {
 .nav-pills .nav-item .nav-link.disabled:hover {
     background: transparent;
 }
+.dropdown-menu {
+    .dropdown-item {
+        label, .form-check {
+            color: #333;
+            margin-bottom: 0;
+        }
+        &:hover {
+            label, .form-check {
+                color: #FFFFFF;
+            }
+        }
+    }
+}
 
 // General CSS
 .no-data {

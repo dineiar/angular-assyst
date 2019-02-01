@@ -1,11 +1,11 @@
 import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 import { switchMap } from 'rxjs/operators';
 import { AssystKnowledge, AssystAttachment, AssystKnowledgeCategory } from 'src/app/assyst/assyst-dto';
 import { AssystAPIService } from 'src/app/assyst/assyst-api.service';
 import { Observable, of } from 'rxjs';
 import { LayoutHelperService, AlertLevels } from 'src/app/layout-helper.service';
-import { Title } from '@angular/platform-browser';
 
 declare var $: any;
 
@@ -65,7 +65,7 @@ export class KnowledgeComponent implements OnInit {
             knowledge => {
                 this.loadKnowledgeBreadcrumb(knowledge.knowledgeProcedureCategoryId);
                 this.loadingKnowledge = false;
-                this.titleService.setTitle('Conhecimento ' + knowledge.name);
+                this.titleService.setTitle(knowledge.name + ' - Conhecimento Assyst');
                 setTimeout(function() {
                     $('#single-knowledge')[0].focus({'preventScroll':true});
                 }, 1000);

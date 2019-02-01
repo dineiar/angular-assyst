@@ -1,4 +1,5 @@
 import { Component, OnInit, AfterViewChecked } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { PreferencesService } from 'src/app/preferences.service';
 import { AssystAPIService } from 'src/app/assyst/assyst-api.service';
 import { AssystEvent } from 'src/app/assyst/assyst-dto';
@@ -25,9 +26,11 @@ export class HomeComponent implements OnInit, AfterViewChecked {
         private preferences: PreferencesService,
         public assyst: AssystAPIService,
         private layoutHelper: LayoutHelperService,
+        private titleService: Title,
     ) { }
 
     ngOnInit() {
+        this.titleService.setTitle('Chamados de acesso Assyst');
         this.autoCallback = this.preferences.getPreference('autoCallback');
         // this.loadEvents();
         this.startEventsMonitor();
@@ -65,6 +68,7 @@ export class HomeComponent implements OnInit, AfterViewChecked {
             .subscribe((data: AssystEvent[]) => {
                 // console.log('Events',data);
                 this.events = data;
+                this.titleService.setTitle(data.length + ' chamados de acesso Assyst');
                 this.loadingEvents = false;
                 if (this.autoCallback) {
                     data.forEach((evt) => {
